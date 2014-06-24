@@ -1,0 +1,87 @@
+Text mining and text analytics[edit]
+The term text analytics describes a set of linguistic, statistical, and machine learning techniques that model and structure the information content of textual sources for business intelligence, exploratory data analysis, research, or investigation.[1] The term is roughly synonymous with text mining; indeed, Ronen Feldman modified a 2000 description of "text mining"[2] in 2004 to describe "text analytics."[3] The latter term is now used more frequently in business settings while "text mining" is used in some of the earliest application areas, dating to the 1980s,[4] notably life-sciences research and government intelligence.
+
+The term text analytics also describes that application of text analytics to respond to business problems, whether independently or in conjunction with query and analysis of fielded, numerical data. It is a truism that 80 percent of business-relevant information originates in unstructured form, primarily text.[5] These techniques and processes discover and present knowledge – facts, business rules, and relationships – that is otherwise locked in textual form, impenetrable to automated processing.
+
+History[edit]
+Labor-intensive manual text mining approaches first surfaced in the mid-1980s,[6] but technological advances have enabled the field to advance during the past decade. Text mining is an interdisciplinary field that draws on information retrieval, data mining, machine learning, statistics, and computational linguistics. As most information (common estimates say over 80%)[5] is currently stored as text, text mining is believed to have a high commercial potential value. Increasing interest is being paid to multilingual data mining: the ability to gain information across languages and cluster similar items from different linguistic sources according to their meaning.
+
+The challenge of exploiting the large proportion of enterprise information that originates in "unstructured" form has been recognized for decades.[7] It is recognized in the earliest definition of business intelligence (BI), in an October 1958 IBM Journal article by H.P. Luhn, A Business Intelligence System, which describes a system that will:
+
+"...utilize data-processing machines for auto-abstracting and auto-encoding of documents and for creating interest profiles for each of the 'action points' in an organization. Both incoming and internally generated documents are automatically abstracted, characterized by a word pattern, and sent automatically to appropriate action points."
+
+Yet as management information systems developed starting in the 1960s, and as BI emerged in the '80s and '90s as a software category and field of practice, the emphasis was on numerical data stored in relational databases. This is not surprising: text in "unstructured" documents is hard to process. The emergence of text analytics in its current form stems from a refocusing of research in the late 1990s from algorithm development to application, as described by Prof. Marti A. Hearst in the paper Untangling Text Data Mining:[8]
+
+For almost a decade the computational linguistics community has viewed large text collections as a resource to be tapped in order to produce better text analysis algorithms. In this paper, I have attempted to suggest a new emphasis: the use of large online text collections to discover new facts and trends about the world itself. I suggest that to make progress we do not need fully artificial intelligent text analysis; rather, a mixture of computationally-driven and user-guided analysis may open the door to exciting new results.
+
+Hearst's 1999 statement of need fairly well describes the state of text analytics technology and practice a decade later.
+
+Text analysis processes[edit]
+Subtasks — components of a larger text-analytics effort — typically include:
+
+Information retrieval or identification of a corpus is a preparatory step: collecting or identifying a set of textual materials, on the Web or held in a file system, database, or content management system, for analysis.
+Although some text analytics systems apply exclusively advanced statistical methods, many others apply more extensive natural language processing, such as part of speech tagging, syntactic parsing, and other types of linguistic analysis.[citation needed]
+Named entity recognition is the use of gazetteers or statistical techniques to identify named text features: people, organizations, place names, stock ticker symbols, certain abbreviations, and so on. Disambiguation — the use of contextual clues — may be required to decide where, for instance, "Ford" can refer to a former U.S. president, a vehicle manufacturer, a movie star, a river crossing, or some other entity.
+Recognition of Pattern Identified Entities: Features such as telephone numbers, e-mail addresses, quantities (with units) can be discerned via regular expression or other pattern matches.
+Coreference: identification of noun phrases and other terms that refer to the same object.
+Relationship, fact, and event Extraction: identification of associations among entities and other information in text
+Sentiment analysis involves discerning subjective (as opposed to factual) material and extracting various forms of attitudinal information: sentiment, opinion, mood, and emotion. Text analytics techniques are helpful in analyzing sentiment at the entity, concept, or topic level and in distinguishing opinion holder and opinion object.[9]
+Quantitative text analysis is a set of techniques stemming from the social sciences where either a human judge or a computer extracts semantic or grammatical relationships between words in order to find out the meaning or stylistic patterns of, usually, a casual personal text for the purpose of psychological profiling etc.[10]
+Applications[edit]
+The technology is now broadly applied for a wide variety of government, research, and business needs. Applications can be sorted into a number of categories by analysis type or by business function. Using this approach to classifying solutions, application categories include:
+
+Enterprise Business Intelligence/Data Mining, Competitive Intelligence
+E-Discovery, Records Management
+National Security/Intelligence
+Scientific discovery, especially Life Sciences
+Sentiment Analysis Tools, Listening Platforms
+Natural Language/Semantic Toolkit or Service
+Publishing
+Automated ad placement
+Search/Information Access
+Social media monitoring
+Security applications[edit]
+Many text mining software packages are marketed for security applications, especially monitoring and analysis of online plain text sources such as Internet news, blogs, etc. for national security purposes.[11] It is also involved in the study of text encryption/decryption.
+
+Biomedical applications[edit]
+Main article: Biomedical text mining
+A range of text mining applications in the biomedical literature has been described.[12]
+
+One online text mining application in the biomedical literature is PubGene that combines biomedical text mining with network visualization as an Internet service.[13][14] TPX is a concept-assisted search and navigation tool for biomedical literature analyses[15] - it runs on PubMed/PMC and can be configured, on request, to run on local literature repositories too.
+
+GoPubMed is a knowledge-based search engine for biomedical texts.
+
+Software applications[edit]
+Text mining methods and software is also being researched and developed by major firms, including IBM and Microsoft, to further automate the mining and analysis processes, and by different firms working in the area of search and indexing in general as a way to improve their results. Within public sector much effort has been concentrated on creating software for tracking and monitoring terrorist activities.[16]
+
+Online media applications[edit]
+Text mining is being used by large media companies, such as the Tribune Company, to clarify information and to provide readers with greater search experiences, which in turn increases site "stickiness" and revenue. Additionally, on the back end, editors are benefiting by being able to share, associate and package news across properties, significantly increasing opportunities to monetize content.
+
+Marketing applications[edit]
+Text mining is starting to be used in marketing as well, more specifically in analytical customer relationship management.[17] Coussement and Van den Poel (2008)[18][19] apply it to improve predictive analytics models for customer churn (customer attrition).[18]
+
+Sentiment analysis[edit]
+Sentiment analysis may involve analysis of movie reviews for estimating how favorable a review is for a movie.[20] Such an analysis may need a labeled data set or labeling of the affectivity of words. Resources for affectivity of words and concepts have been made for WordNet[21] and ConceptNet,[22] respectively.
+
+Text has been used to detect emotions in the related area of affective computing.[23] Text based approaches to affective computing have been used on multiple corpora such as students evaluations, children stories and news stories.
+
+Academic applications[edit]
+The issue of text mining is of importance to publishers who hold large databases of information needing indexing for retrieval. This is especially true in scientific disciplines, in which highly specific information is often contained within written text. Therefore, initiatives have been taken such as Nature's proposal for an Open Text Mining Interface (OTMI) and the National Institutes of Health's common Journal Publishing Document Type Definition (DTD) that would provide semantic cues to machines to answer specific queries contained within text without removing publisher barriers to public access.
+
+Academic institutions have also become involved in the text mining initiative:
+
+The National Centre for Text Mining (NaCTeM), is the first publicly funded text mining centre in the world. NaCTeM is operated by the University of Manchester[24] in close collaboration with the Tsujii Lab,[25] University of Tokyo.[26] NaCTeM provides customised tools, research facilities and offers advice to the academic community. They are funded by the Joint Information Systems Committee (JISC) and two of the UK Research Councils (EPSRC & BBSRC). With an initial focus on text mining in the biological and biomedical sciences, research has since expanded into the areas of social sciences.
+In the United States, the School of Information at University of California, Berkeley is developing a program called BioText to assist biology researchers in text mining and analysis.
+Further, private initiatives also offer tools for academic text mining:
+
+Newsanalytics.net provides researchers with a free scalable solution for keyword-based text analysis. The initiative's research apps were developed to support news analytics, but are equally useful for regular text analysis applications.
+Software[edit]
+Text mining computer programs are available from many commercial and open source companies and sources. See List of text mining software.
+
+Implications[edit]
+Until recently, websites most often used text-based searches, which only found documents containing specific user-defined words or phrases. Now, through use of a semantic web, text mining can find content based on meaning and context (rather than just by a specific word).
+
+Additionally, text mining software can be used to build large dossiers of information about specific people and events. For example, large datasets based on data extracted from news reports can be built to facilitate social networks analysis or counter-intelligence. In effect, the text mining software may act in a capacity similar to an intelligence analyst or research librarian, albeit with a more limited scope of analysis.
+
+Text mining is also used in some email spam filters as a way of determining the characteristics of messages that are likely to be advertisements or other unwanted material.
+
