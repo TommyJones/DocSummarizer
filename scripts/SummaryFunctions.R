@@ -21,17 +21,26 @@ capture.output <- lapply(required.packages, function(x) require(x, character.onl
 rm(install, capture.output, required.packages)
 
 
-SummaryFunction <- function(path.to.file, N=4, method="raw"){
+SummarizeDoc <- function(doc, N=4, keywords=FALSE){
     ###############################################
-    # Takes the path to a text file and returns
-    # the top N sentances summarizeing the doc
     # This is the main function
+    # 
+    # inputs:
+    #   doc = a document represneted as 1 X 1 
+    #       character vector.
+    #   N = number of sentences (keywords) you
+    #       want returned as output.
+    #   keywords = logical return keywords or 
+    #       summary sentences of the document
+    #
+    # output:
+    #   A 1 X 1 character vector of N summary 
+    #   sentences of the document or, if keywords
+    #   is TRUE, N keywords related to the doc.
+    #
+    # future functionality: ability to stem words
+    #   or have n-gram keywords
     ###############################################
-    
-    doc <- scan(path.to.file, what="character", sep="\n")
-    
-    # collapse document to single line
-    doc <- paste(doc, collapse=" ")
     
     # extract sentences
     doc <- ParseSentences(doc = doc)
@@ -39,22 +48,37 @@ SummaryFunction <- function(path.to.file, N=4, method="raw"){
     # get dtm of sentences
     dtm <- MakeSentenceDtm(doc = doc)
     
-    # keep only sentences that have at least 5 words and less than 21
+    # keep only sentences that have at between 5 and 20 words
+    # this is arbitrary and could be adjusted/improved
     dtm <- dtm[ rowSums(dtm) %in% 5:20, ] 
     
-    # get adjacency matrix
-    g <- MakeSentenceAdjmat(dtm = dtm)
+    # dtm and adjacency matrix
+    if( keywords ){ # transpose dtm and make entries 0,1 for keywords
+        dtm <- t(dtm) 
+        
+        # get adjacency matrix
+        g <- MakeSentenceAdjmat(dtm=dtm, method="raw")
+        
+    }else{ # don't transpose and use cosine similarity for sentences
+        g <- MakeSentenceAdjmat(dtm=dtm, method="cosine")
+    }
     
-    # top N sentences based on eigenvector centrality
-    top.n <- SentenceEigenRank(igraph.object = g, sentences = doc, N = N, method=method)
+    # top N sentences (keywords) based on eigenvector centrality
+    top.n <- evcent(graph=g)
     
-    # paste together for final result and output
-    summary <- paste(top.n, collapse=" ")
+    top.n <- names(top.n$vector)[ order(top.n$vector, decreasing=TRUE) ][ 1:N ]
     
-    return(summary)
+    if( ! keywords ){ # if we don't want keywords
+        # get full sentences
+        top.n <- doc[ top.n ]
+        
+        # paste together for final result and output
+        top.n <- paste(top.n, collapse=" ")
+    }
+    
+    
+    return(top.n)
 }
-
-
 
 ParseSentences <- function(doc){
     ######################################################
@@ -77,6 +101,7 @@ ParseSentences <- function(doc){
 
 NgramTokenizer <- function(min, max) {
     require(RWeka)
+    # for now, this function is unused but may be later
     # Function creates a function to create ngrams from a document term matrix
     # For bigrams min=max=2. For bigrams and trigrams min=2, max=3
     # Example: 
@@ -89,12 +114,16 @@ NgramTokenizer <- function(min, max) {
     return(result)
 }
 
-MakeSentenceDtm <- function(doc, stem=TRUE, min.ngram=1, max.ngram=1){
+MakeSentenceDtm <- function(doc, stem=FALSE, min.ngram=1, max.ngram=1){
     #################################################
-    # input: character vector whose entries 
-    # correspond to sentences in a document
+    # input: 
+    #   doc = character vector whose entries 
+    #       correspond to sentences in a document
+    #   stem = logical, should document be stemmed?
+    #   min.ngram = minimum word length for ngrams
+    #   max.ngram = maximum word length for ngrams
     #
-    # output: a sentance * stem dimensional matrix
+    # output: a sentance X terms dimensional matrix
     #   of class dgCMatrix from the Matrix package
     #################################################
     
@@ -129,80 +158,48 @@ MakeSentenceDtm <- function(doc, stem=TRUE, min.ngram=1, max.ngram=1){
     return(dtm.sparse)
 }
 
-
-ExtractKeywords <- function(dtm, M=5){
-    ########################################################################
-    # inputs: 
-    #       dtm = sparse dtm from Matrix package or standard R matrix as input
-    #       M = number of keywords to return
-    #
-    # output: a vector of keywords
-    ########################################################################
-    
-    
-    
-    dtm <- dtm > 0 # becomes a matrix of ones and zeros, basically "has word" or does not
-    
-    adj <- t(dtm) %*% dtm
-    
-    g <- graph.adjacency(adj, weighted=TRUE, mode="undirected") 
-    
-    ev <- evcent(graph=g)
-    
-    terms <- names(ev$vector)[ order(ev$vector, decreasing=TRUE) ][ 1:M ]
-    
-    return(terms)
-}
-
 MakeSentenceAdjmat <- function(dtm, method="cosine"){
     ########################################################################
     # inputs: 
     #       dtm = sparse dtm from Matrix package or standard R matrix as input
     #       method = one of "raw", "cosine", "keyword". 
-    #           raw = adjacency matrix based on common word frequencies
+    #           raw = adjacency matrix based on common words
     #           cosine = adjacency matrix based on cosine similarity (5 nearest neighbors)
-    #           keyword = runs keyword extraction then makes adjacency based on common keywords
     #
     # output: an igraph object
     ########################################################################
     
-    methods <- list(raw=function(mat) mat %*% t(mat),
-                    cosine=function(mat){
-                        mat <- t(apply(mat, 1, function(x){
-                            x <- x / sqrt( sum( x * x ) )
-                            return(x)
-                        }))
-                        return(mat %*% t(mat))
-                    }, 
-                    keyword=function(mat){ # this doesn't yet scale
-                        keywords <- ExtractKeywords(dtm=mat, M=10)
-                        key.mat <- dtm[ , keywords ]
-                        key.mat <- key.mat[ rowSums(key.mat) > 0 , ] # drops sentences w/o any keywords
-                        return(key.mat %*% t(key.mat))
-                    })
-    FUN <- methods[[ method ]]
+    # define methods for adjacency matrix
+    methods <- list(cosine=NA, raw=NA)
     
-    adj <- FUN(dtm)
+    methods$cosine <- function(mat){
+        
+        mat <- t(apply(mat, 1, function(x){
+            x <- x / sqrt( sum( x * x ) )
+            return(x)
+        }))
+        
+        mat <- mat %*% t(mat)
+        
+        return(mat)
+    }
+    
+    methods$raw <- function(mat){
+        mat <- mat > 0
+        
+        mat <- mat %*% t(mat)
+        
+        return(mat)
+    }
+    
+    
+    
+    dist.fun <- methods[[ method ]]
+    
+    adj <- dist.fun(dtm)
     
     g <- graph.adjacency(adj, mode = "undirected", weighted=TRUE, diag = FALSE)
     
     return(g)
 }
 
-SentenceEigenRank <- function(igraph.object, sentences, N=5){
-    ######################################################
-    # input: and igraph object whose vertices correspond
-    #   to the sentences of a document
-    #
-    # output: The top N sentences of a document ranked by
-    #   eigenvector centrality
-    ######################################################
-    
-    rank <- evcent(igraph.object)
-    
-    top.n <- names(rank$vector)[ order(rank$vector, decreasing=TRUE ) ][ 1:N ]
-    
-    result <- sentences[ top.n ]
-    
-    return(result)
-}
