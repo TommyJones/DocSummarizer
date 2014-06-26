@@ -1,6 +1,6 @@
-This project is my first attempt at building a document summarizer.
+Functions for automatic document summarization and keyword extraction
 
- - 6/23/2014 TWJ
+- 6/25/2014 TWJ
 
 
 
